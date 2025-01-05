@@ -1,0 +1,252 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>HIT-OS LAB5 进程运行轨迹的跟踪与统计 | Stellaream's Blog</title><meta name="author" content="Stellaream"><meta name="copyright" content="Stellaream"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="Lab5 -- 进程运行轨迹的跟踪与统计">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HIT-OS LAB5 进程运行轨迹的跟踪与统计">
+<meta property="og:url" content="https://stellaream.github.io/2025/01/05/HIT-OS-LAB5/index.html">
+<meta property="og:site_name" content="Stellaream&#39;s Blog">
+<meta property="og:description" content="Lab5 -- 进程运行轨迹的跟踪与统计">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://stellaream.github.io/img/cover.jpg">
+<meta property="article:published_time" content="2025-01-05T01:53:17.000Z">
+<meta property="article:modified_time" content="2025-01-05T04:25:33.357Z">
+<meta property="article:author" content="Stellaream">
+<meta property="article:tag" content="Stellaream">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://stellaream.github.io/img/cover.jpg"><link rel="shortcut icon" href="/img/logo.jpg"><link rel="canonical" href="https://stellaream.github.io/2025/01/05/HIT-OS-LAB5/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          const mediaQueryDark = window.matchMedia('(prefers-color-scheme: dark)')
+          const mediaQueryLight = window.matchMedia('(prefers-color-scheme: light)')
+          
+          if (theme === undefined) {
+            if (mediaQueryLight.matches) activateLightMode()
+            else if (mediaQueryDark.matches) activateDarkMode()
+            else {
+              const hour = new Date().getHours()
+              const isNight = hour <= 6 || hour >= 18
+              isNight ? activateDarkMode() : activateLightMode()
+            }
+            mediaQueryDark.addEventListener('change', () => {
+              if (saveToLocal.get('theme') === undefined) {
+                e.matches ? activateDarkMode() : activateLightMode()
+              }
+            })
+          } else {
+            theme === 'light' ? activateLightMode() : activateDarkMode()
+          }
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'HIT-OS LAB5 进程运行轨迹的跟踪与统计',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  isShuoshuo: false
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><script>(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+  window.addEventListener('load', preloader.endLoading)
+
+  if (false) {
+    btf.addGlobalFn('pjaxSend', preloader.initLoading, 'preloader_init')
+    btf.addGlobalFn('pjaxComplete', preloader.endLoading, 'preloader_end')
+  }
+})()</script><div id="web_bg" style="background-image: url(/img/bg.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/logo.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">5</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">1</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/cover.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="/img/logo.jpg" alt="Logo"><span class="site-name">Stellaream's Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">HIT-OS LAB5 进程运行轨迹的跟踪与统计</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">HIT-OS LAB5 进程运行轨迹的跟踪与统计</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-01-05T01:53:17.000Z" title="发表于 2025-01-05 09:53:17">2025-01-05</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-01-05T04:25:33.357Z" title="更新于 2025-01-05 12:25:33">2025-01-05</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/HIT-OSLAB/">HIT-OSLAB</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="进程运行轨迹的跟踪与统计"><a href="#进程运行轨迹的跟踪与统计" class="headerlink" title="进程运行轨迹的跟踪与统计"></a>进程运行轨迹的跟踪与统计</h1><h2 id="编写多进程的样本程序"><a href="#编写多进程的样本程序" class="headerlink" title="编写多进程的样本程序"></a>编写多进程的样本程序</h2><p>基于模板 process.c 编写多进程的样本程序，实现如下功能：</p>
+<ul>
+<li>所有子进程都并行运行，每个子进程的实际运行时间一般不超过 30 秒</li>
+<li>父进程向标准输出打印所有子进程的 id ，并在所有子进程都退出后才退出</li>
+</ul>
+<p>基于 cpuio_bound 函数编写样本程序：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">#define CPID_NUM 4</span><br><span class="line">int main(int argc, char * argv[])</span><br><span class="line">&#123;</span><br><span class="line">	int cpid_list[CPID_NUM];</span><br><span class="line">	int i;</span><br><span class="line">	</span><br><span class="line">	/* child process 1 */</span><br><span class="line">	cpid_list[0] = fork();</span><br><span class="line">	if (cpid_list[0] &lt; 0) &#123;</span><br><span class="line">		printf(&quot;Fail to fork child process 1\n&quot;);</span><br><span class="line">		return -1;</span><br><span class="line">	&#125; else if (cpid_list[0] == 0) &#123;</span><br><span class="line">		cpuio_bound(10, 1, 0);		/* 10 times for CPU only */</span><br><span class="line">		_exit(0);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	/* child process 2 */</span><br><span class="line">	cpid_list[1] = fork();</span><br><span class="line">	if (cpid_list[1] &lt; 0) &#123;</span><br><span class="line">		printf(&quot;Fail to fork child process 2\n&quot;);</span><br><span class="line">		return -1;</span><br><span class="line">	&#125; else if (cpid_list[1] == 0) &#123;</span><br><span class="line">		cpuio_bound(10, 0, 1);		/* 10 times for I/O only */</span><br><span class="line">		_exit(0);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	/* child process 3 */</span><br><span class="line">	cpid_list[2] = fork();</span><br><span class="line">	if (cpid_list[2] &lt; 0) &#123;</span><br><span class="line">		printf(&quot;Fail to fork child process 3\n&quot;);</span><br><span class="line">		return -1;</span><br><span class="line">	&#125; else if (cpid_list[2] == 0) &#123;</span><br><span class="line">		cpuio_bound(10, 1, 1);		/* 1 time for CPU &amp; I/O once */</span><br><span class="line">		_exit(0);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	/* child process 4 */</span><br><span class="line">	cpid_list[3] = fork();</span><br><span class="line">	if (cpid_list[3] &lt; 0) &#123;</span><br><span class="line">		printf(&quot;Fail to fork child process 4\n&quot;);</span><br><span class="line">		return -1;</span><br><span class="line">	&#125; else if (cpid_list[3] == 0) &#123;</span><br><span class="line">		cpuio_bound(10, 1, 9);		/* 9 times I/O more than CPU */</span><br><span class="line">		_exit(0);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	for (i = 0; i &lt; CPID_NUM; i++) &#123;</span><br><span class="line">		waitpid(cpid_list[i], NULL, 0);</span><br><span class="line">		printf(&quot;Child process %d(pid = %d) finish\n&quot;, i+1, cpid_list[i]);</span><br><span class="line">	&#125;</span><br><span class="line">	printf(&quot;Father process(pid = %d) finish\n&quot;, getpid());</span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>程序使用系统调用 fork() 创建四个子进程并将其 pid 返回至父进程创建数组 cpid_list 中对应位置处，四个子进程分别调用不同参数的 cpuio_bound 函数并使用系统调用 _exit(0) 退出，父进程依次使用系统调用 waitpid() 等待四个进程退出，最后打印相关信息并退出。相关系统调用函数定义如下：</p>
+<blockquote>
+<p>void _exit(int status);<br>pid_t waitpid(pid_t pid,int * wait_stat,int options);</p>
+</blockquote>
+<h2 id="进程运行轨迹的跟踪"><a href="#进程运行轨迹的跟踪" class="headerlink" title="进程运行轨迹的跟踪"></a>进程运行轨迹的跟踪</h2><p>在 Linux 0.11 上实现进程运行轨迹的跟踪。基本任务是在内核中维护一个日志文件 &#x2F;var&#x2F;process.log ，把从操作系统启动到系统关机过程中所有进程的运行轨迹都记录在这一 log 文件中。</p>
+<h3 id="日志文件-var-process-log"><a href="#日志文件-var-process-log" class="headerlink" title="日志文件 &#x2F;var&#x2F;process.log"></a>日志文件 &#x2F;var&#x2F;process.log</h3><p>为记录进程 1 由系统调用 fork() 被创建开始的运行轨迹，在进程 0 中打开日志文件 &#x2F;var&#x2F;process.log 并将其与文件描述符 3 关联，故将原先由进程 1 执行的函数 init() 中相关代码迁移至进程 0 进入用户模式后、执行系统调用 fork() 创建进程 1 前，部分代码如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">move_to_user_mode();</span><br><span class="line">   --------------------------------------------------------------------</span><br><span class="line">setup((void *) &amp;drive_info);</span><br><span class="line">(void) open(&quot;/dev/tty0&quot;,O_RDWR,0);</span><br><span class="line">(void) dup(0);</span><br><span class="line">(void) dup(0);</span><br><span class="line">(void) open(&quot;/var/process.log&quot;, O_CREAT | O_TRUNC | O_WRONLY, 0666);</span><br><span class="line">   --------------------------------------------------------------------</span><br><span class="line">if (!fork()) &#123;		/* we count on this going ok */</span><br><span class="line">	init();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>系统调用函数 sys_open() 定义如下：</p>
+<blockquote>
+<p>int sys_open(const char * filename,int flag,int mode)</p>
+</blockquote>
+<p>以只写方式 (O_WRONLY) 创建 (O_CREAT) 所有人可读可写 (0666) 的文件 &#x2F;var&#x2F;process.log，若文件已存在则清空已有内容 (O_TRUNC)。其中 0666 是多种宏的组合，相关宏被定义在文件 &#x2F;include&#x2F;sys&#x2F;stat.h 中：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#define S_IRUSR 00400       /* 用户可读 */</span><br><span class="line">#define S_IWUSR 00200       /* 用户可写 */</span><br><span class="line">#define S_IRGRP 00040       /* 用户组可读 */</span><br><span class="line">#define S_IWGRP 00020       /* 用户组可写 */</span><br><span class="line">#define S_IROTH 00004       /* 其余用户可读 */</span><br><span class="line">#define S_IWOTH 00002       /* 其余用户可写 */</span><br></pre></td></tr></table></figure>
+<p>使用函数 fprintk() 在进程状态改变时，向日志文件 &#x2F;var&#x2F;process.log 输出信息。代码放入文件 &#x2F;kernel&#x2F;printk.c 中，并将函数声明添加至头文件 &#x2F;include&#x2F;linux&#x2F;kernel.h 中。</p>
+<h3 id="进程状态切换"><a href="#进程状态切换" class="headerlink" title="进程状态切换"></a>进程状态切换</h3><p>进程状态切换相关函数定义在 &#x2F;kernel&#x2F;fork.c、&#x2F;kernel&#x2F;sched.c、&#x2F;kernel&#x2F;exit.c 中，分别对应进程的创建、调度和终止。<br><strong>文件 fork.c 中状态切换：</strong><br>系统调用函数 sys_fork() 通过调用函数 copy_process() 复制父进程信息至子进程中并设置子进程状态，涉及到子进程的新建 (N)、进入就绪态 (J)：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">int copy_process(...)</span><br><span class="line">&#123;</span><br><span class="line">	......</span><br><span class="line">	p-&gt;start_time = jiffies;</span><br><span class="line">    fprintk(3, &quot;%ld\t%c\t%ld\n&quot;, p-&gt;pid, &#x27;N&#x27;, jiffies);</span><br><span class="line">    ......</span><br><span class="line">	p-&gt;state = TASK_RUNNING;	/* do this last, just in case */</span><br><span class="line">	fprintk(3, &quot;%ld\t%c\t%ld\n&quot;, p-&gt;pid, &#x27;J&#x27;, jiffies);</span><br><span class="line">	return last_pid;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>文件 sched.c 中状态切换：</strong><br>调度函数 schedule() 首先将任务队列中处于可中断阻塞态 (TASK_INTERRUPTIBLE) 的进程设置为就绪态，随后遍历任务队列执行调度算法获得目标进程，最终通过伪函数 switch_to() 切换至目标进程，涉及到任务队列中进程进入就绪态 (J)、当前进程进入就绪态(J)、目标进程进入运行态 (R)：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">void schedule(void)</span><br><span class="line">&#123;</span><br><span class="line">    ......</span><br><span class="line">			if (((*p)-&gt;signal &amp; ~(_BLOCKABLE &amp; (*p)-&gt;blocked)) &amp;&amp;</span><br><span class="line">			(*p)-&gt;state==TASK_INTERRUPTIBLE) &#123;</span><br><span class="line">				(*p)-&gt;state=TASK_RUNNING;</span><br><span class="line">				fprintk(3, &quot;%ld\t%c\t%ld\n&quot;, (*p)-&gt;pid, &#x27;J&#x27;, jiffies);</span><br><span class="line">			&#125;</span><br><span class="line">	......</span><br><span class="line">	while (1) &#123;</span><br><span class="line">		......</span><br><span class="line">	&#125;</span><br><span class="line">	if (current-&gt;pid != task[next]-&gt;pid) &#123;</span><br><span class="line">		if (current-&gt;pid != 0 &amp;&amp; current-&gt;state == TASK_RUNNING) &#123;</span><br><span class="line">			fprintk(3, &quot;%ld\t%c\t%ld\n&quot;, current-&gt;pid, &#x27;J&#x27;, jiffies);	</span><br><span class="line">		&#125;</span><br><span class="line">		if (task[next]-&gt;pid != 0) &#123;</span><br><span class="line">			fprintk(3, &quot;%ld\t%c\t%ld\n&quot;, task[next]-&gt;pid, &#x27;R&#x27;, jiffies);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	switch_to(next);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>需注意，因为当前进程可能经系统调用 sys_pause()、sys_waitpid()、函数 (interruptible_)sleep_on() 转换为阻塞态后调用函数 schedule()，故不能武断的认为当前进程状态 (current-&gt;state) 为运行态 (TASK_RUNNING)，进而直接向日志文件中输出日志 <strong>current-&gt;pid, J, jiffies</strong>。同时目标进程可能依旧为当前进程，表现为当前进程状态不发生改变，故在打印日志时需提前判断。</li>
+</ul>
+<p>系统调用函数 sys_pause() 将当前任务状态转换为可中断阻塞态 (TASK_INTERRUPTIBLE)，随后调用函数 schedule() 执行进程切换，涉及到当前进程进入阻塞态 (W)：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">int sys_pause(void)</span><br><span class="line">&#123;</span><br><span class="line">	current-&gt;state = TASK_INTERRUPTIBLE;</span><br><span class="line">	if (current-&gt;pid != 0) &#123;</span><br><span class="line">		fprintk(3, &quot;%ld\t%c\t%ld\n&quot;, current-&gt;pid, &#x27;W&#x27;, jiffies);</span><br><span class="line">	&#125;</span><br><span class="line">	schedule();</span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>由于进程 0 涉及到 pause() 系统调用，为避免输出进程 0 相关日志信息，在调用函数 fprintk() 前需判断当前是否处于进程 0。</li>
+</ul>
+<p>不可中断睡眠函数 sleep_on() 将睡眠任务队列头指针 (*P) 存储在当前进程堆栈帧的 tmp 变量中，并更新头指针使其指向当前进程，随后将当前进程状态切换为不可中断阻塞态 (TASK_UNINTERRUPTIBLE) 并调用函数 schedule() 执行进程切换。等待至某一进程对当前睡眠任务队列执行唤醒函数 wake_up() 将该队列首部进程状态切换至就绪态 (TASK_RUNNING) 并在某一时刻调度至该进程运行时，会将 tmp 变量指向进程状态切换至就绪态 (TASK_RUNNING)，期待在未来某一时刻调度运行。该函数涉及到当前进程进入阻塞态 (W)、队列下一进程 tmp 进入就绪态 (J)：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">void sleep_on(struct task_struct **p)</span><br><span class="line">&#123;</span><br><span class="line">    ......</span><br><span class="line">	tmp = *p;</span><br><span class="line">	*p = current;</span><br><span class="line">	current-&gt;state = TASK_UNINTERRUPTIBLE;</span><br><span class="line">	fprintk(3, &quot;%ld\t%c\t%ld\n&quot;, current-&gt;pid, &#x27;W&#x27;, jiffies);</span><br><span class="line">	schedule();</span><br><span class="line">    ---------------------------------------------------------</span><br><span class="line">	if (tmp) &#123;</span><br><span class="line">		tmp-&gt;state=0;      /* 0 is TASK_RUNNING */</span><br><span class="line">		fprintk(3, &quot;%ld\t%c\t%ld\n&quot;, tmp-&gt;pid, &#x27;J&#x27;, jiffies);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可中断睡眠函数 interruptible_sleep_on() 将当前进程状态切换为可中断阻塞态 (TASK_INTERRUPTIBLE)，这导致该任务可通过信号、任务超时等手段唤醒。然而调度函数 schedule() 在唤醒时遍历所有进程，故可能出现不在睡眠队列首部的进程被提前唤醒，因此在执行该进程时需再次将其阻塞并切换至其他进程，同时将该队列首部进程状态转换为就绪态 (TASK_RUNNING) 唤醒 (repeat 部分)。该函数涉及到当前进程进入阻塞态 (W)、乱序唤醒时队列首部进程进入就绪态 (J)、队列下一进程 tmp 进入就绪态 (J)：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">void interruptible_sleep_on(struct task_struct **p)</span><br><span class="line">&#123;</span><br><span class="line">	......</span><br><span class="line">	tmp=*p;</span><br><span class="line">	*p=current;</span><br><span class="line">    ---------------------------------------------------------</span><br><span class="line">repeat:	current-&gt;state = TASK_INTERRUPTIBLE;</span><br><span class="line">	fprintk(3, &quot;%ld\t%c\t%ld\n&quot;, current-&gt;pid, &#x27;W&#x27;, jiffies);</span><br><span class="line">	schedule();</span><br><span class="line">	if (*p &amp;&amp; *p != current) &#123;</span><br><span class="line">		(**p).state=0;      /* 0 is TASK_RUNNING */</span><br><span class="line">		fprintk(3, &quot;%ld\t%c\t%ld\n&quot;, (*p)-&gt;pid, &#x27;J&#x27;, jiffies);</span><br><span class="line">		goto repeat;</span><br><span class="line">	&#125;</span><br><span class="line">    ---------------------------------------------------------</span><br><span class="line">	*p=NULL;</span><br><span class="line">	if (tmp) &#123;</span><br><span class="line">		tmp-&gt;state=0;      /* 0 is TASK_RUNNING */</span><br><span class="line">		fprintk(3, &quot;%ld\t%c\t%ld\n&quot;, tmp-&gt;pid, &#x27;J&#x27;, jiffies);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>唤醒函数 wake_up() 将睡眠队列首部进程状态转换为就绪态 (TASK_RUNNING) 唤醒，涉及到队列首部进程进入就绪态 (J)：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">void wake_up(struct task_struct **p)</span><br><span class="line">&#123;</span><br><span class="line">	if (p &amp;&amp; *p) &#123;</span><br><span class="line">		(**p).state=0;</span><br><span class="line">		fprintk(3, &quot;%ld\t%c\t%ld\n&quot;, (*p)-&gt;pid, &#x27;J&#x27;, jiffies);</span><br><span class="line">		*p=NULL;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如图 1，多个进程等待同一资源时会形成隐式任务等待队列，通过堆栈中的变量 tmp 连接前后进程。该队列在每次调用函数 (interruptible_)sleep_on() 时不断更新头指针，在调用函数 wake_up() (也在函数 interruptible_sleep_on() 中) 唤醒时由头到尾依次更新下一进程状态为就绪态 (TASK_RUNNING)。该数据结构与其称为队列，更确切的说法应该是满足后进先出性质的任务栈，唤醒时类似多米诺骨牌依次又必然唤醒每个进程。</p>
+<p><img src="/2025/01/05/HIT-OS-LAB5/lab5-img1.png" alt="图1"></p>
+<p><strong>文件 exit.c 中状态切换：</strong><br>系统调用函数 sys_waitpid() 将当前进程设置可中断阻塞态 (TASK_INTERRUPTIBLE) 并调用函数 schedule() 执行进程切换，涉及到当前进程进入阻塞态 (W)：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">int sys_waitpid(pid_t pid,unsigned long * stat_addr, int options)</span><br><span class="line">&#123;</span><br><span class="line">	......</span><br><span class="line">		current-&gt;state=TASK_INTERRUPTIBLE;</span><br><span class="line">		fprintk(3, &quot;%ld\t%c\t%ld\n&quot;, current-&gt;pid, &#x27;W&#x27;, jiffies);</span><br><span class="line">		schedule();</span><br><span class="line">    ......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>系统调用函数 sys_exit() 调用函数 do_exit() 释放当前进程资源并退出，涉及到当前进程退出 (E)：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">int do_exit(long code)</span><br><span class="line">&#123;</span><br><span class="line">    ......</span><br><span class="line">	current-&gt;state = TASK_ZOMBIE;</span><br><span class="line">	fprintk(3, &quot;%ld\t%c\t%ld\n&quot;, current-&gt;pid, &#x27;E&#x27;, jiffies);</span><br><span class="line">    ......</span><br><span class="line">	tell_father(current-&gt;father);</span><br><span class="line">	schedule();</span><br><span class="line">	......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="运行样本程序并分析日志文件"><a href="#运行样本程序并分析日志文件" class="headerlink" title="运行样本程序并分析日志文件"></a>运行样本程序并分析日志文件</h2><p>在修改过的 0.11 上运行样本程序，通过分析 log 文件，统计该程序建立的所有进程的等待时间、完成时间（周转时间）和运行时间，然后计算平均等待时间，平均完成时间和吞吐量。可以自己编写统计程序，也可以使用 python 脚本程序 stat_log.py 进行统计。</p>
+<h3 id="运行样本程序"><a href="#运行样本程序" class="headerlink" title="运行样本程序"></a>运行样本程序</h3><p>样本程序 process 的运行结果如图 2 所示，父进程向标准输出打印所有子进程的 id ，依次等待四个子进程退出后才退出：</p>
+<p><img src="/2025/01/05/HIT-OS-LAB5/lab5-img2.png" alt="图2"></p>
+<h3 id="分析日志文件"><a href="#分析日志文件" class="headerlink" title="分析日志文件"></a>分析日志文件</h3><p>日志文件 &#x2F;var&#x2F;process.log 的内容如图 3 所示，其与实验网站中预期进程运行轨迹基本一致：</p>
+<p><img src="/2025/01/05/HIT-OS-LAB5/lab5-img3.png" alt="图3"></p>
+<h3 id="使用脚本进行统计"><a href="#使用脚本进行统计" class="headerlink" title="使用脚本进行统计"></a>使用脚本进行统计</h3><p>使用 python 脚本程序 stat_log.py 统计平均等待时间、平均完成时间和吞吐量，结果如图 4 所示：</p>
+<p><img src="/2025/01/05/HIT-OS-LAB5/lab5-img4.png" alt="图4"></p>
+<h2 id="修改时间片"><a href="#修改时间片" class="headerlink" title="修改时间片"></a>修改时间片</h2><p>修改 0.11 进程调度的时间片，然后再运行同样的样本程序，统计同样的时间数据，和原有的情况对比，体会不同时间片带来的差异。<br><strong>设置时间片为 5 时结果如图 5、6 所示：</strong></p>
+<p><img src="/2025/01/05/HIT-OS-LAB5/lab5-img5.png" alt="图5"><br><img src="/2025/01/05/HIT-OS-LAB5/lab5-img6.png" alt="图6"></p>
+<p><strong>设置时间片为 25 时结果如图 7、8 所示：</strong></p>
+<p><img src="/2025/01/05/HIT-OS-LAB5/lab5-img7.png" alt="图7"><br><img src="/2025/01/05/HIT-OS-LAB5/lab5-img8.png" alt="图8"></p>
+<p>不同时间片对应着不同的进程运行轨迹，包括从进程 1 开始到进程 4 (shell) 等待过程中细微的差异，可以通过日志反向模拟进程的调度轨迹；同样的，测试程序涉及进程 (6~10) 的运行轨迹、等待时间、完成时间等都与时间片的设置息息相关。*这里引用一篇笔记 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/9525740855">https://zhuanlan.zhihu.com/p/9525740855</a> 在多轮调试下得到的结论，<strong>碰巧</strong>测试程序 process.c 的编写高度相似：*</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">可以观察到一些有意思的东西：</span><br><span class="line"></span><br><span class="line">进程7(CPU10)：可以理解为CPU密集型，时间片在250（含）以下时，周转时间几乎不变，超过250后周转时间下降较多。初步分析原因时间片大了，CPU密集型任务被调度到时，执行的时间就更长，更有利于任务完成。至于为什么时间片在250（含）以下时，周转时间几乎不变这个暂时没有搞懂原因。</span><br><span class="line">进程8(IO10)：可以理解为IO密集型，几乎是随着时间片的增加而增加。分析原因是因为IO密集型经常要处于等待状态，等待完成后，如果其他进程刚分配到新的时间片运行，那么就要等到其他进程运行完，才会调度到自己。如果时间片短，其他进程运行时间就短，就很快会切换到自己。总结来说最差的情况就是自己IO已经准备就绪了，结果还要等上设置的时间片的时间才能轮到自己执行。</span><br><span class="line">进程9(CPU5 IO5)：可以理解为均衡性，它的折线基本上处于IO密集型和CPU密集型之间。折线图中50、75、100、150这4个点例外，我估计是样本程序的原因，或者是执行次数比较少，导致数据不太平均。</span><br><span class="line">进程10(CPU1 IO9)：基本是可以理解为IO密集型，但因为有1部分CPU计算，所以在时间片小的时候周转时间大于进程8(IO10)，时间片大的时候周转时间要小于进程8(IO10)。</span><br><span class="line">进程6(父)：周转时间总是接近最大的进程的周转时间。这个不难理解，因为父进程总是要等待最后一个进程执行完后才退出。</span><br><span class="line">平均周转时间：一开始随着周转时间的增加而增加，在15的时候最低，但是差别不大，后面几乎随着时间片的增加而增加。</span><br><span class="line"></span><br><span class="line">总结一下结论：</span><br><span class="line">时间片太小：由于时间片过短，进程很快就会被挂起，系统需要频繁地进行进程切换，这会增加系统的开销，降低CPU的利用率。频繁的进程切换不仅会增加系统的开销，还可能导致CPU缓存中的数据频繁失效，从而降低系统的整体性能。</span><br><span class="line">时间片太大：由于时间片过长，一个进程可能会长时间占用CPU，导致其他进程等待时间过长，系统的响应速度变慢。过大的时间片会减少进程切换的次数，从而降低系统的并发性，使得系统无法高效地处理多个任务。</span><br><span class="line">时间片设置：时间片不是越大越好，也不是越小越好。如果是CPU密集型，时间片设置大一些较为有利；如果是IO密集型，时间片设置小一些较为有利；如果是均衡性，时间片设置为中间最妥当。Linux0.11设置的时间片为15，从图上可以观察到平均周转时间最短，不愧是大佬的设定。</span><br></pre></td></tr></table></figure>
+<p><strong>在时间片被设置为 15 的条件下，我们来玩弄一下系统调用 nice()：</strong><br>独占 cpu 的子进程 1 十分气愤，自己不需要 I&#x2F;O 完全可以一直运行，但是为了顾全大局，被迫定期切换至其他进程。压抑过久的他某天决定要疯一把：“<strong>让我吃满 cpu，包 Carry 的好吧！</strong>”，于是有了发癫版的 process_pro.c：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">int main(int argc, char * argv[])</span><br><span class="line">&#123;</span><br><span class="line">	......</span><br><span class="line">	/* child process 1 */</span><br><span class="line">	cpid_list[0] = fork();</span><br><span class="line">	if (cpid_list[0] &lt; 0) &#123;</span><br><span class="line">		printf(&quot;Fail to fork child process 1\n&quot;);</span><br><span class="line">		return -1;</span><br><span class="line">	&#125; else if (cpid_list[0] == 0) &#123;</span><br><span class="line">		nice(-150);</span><br><span class="line">		cpuio_bound(10, 1, 0);		/* 10 times for CPU only */</span><br><span class="line">		_exit(0);</span><br><span class="line">	&#125;</span><br><span class="line">    ......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然而：</p>
+<p><img src="/2025/01/05/HIT-OS-LAB5/lab5-img9.png" alt="图9"><br>可以看到，狂吃三路的进程 13 (process_pro 中子进程 1) 接管了 cpu 并迅速完成了自己的任务，然而其他子进程 (14~16) 每次调度回自己执行前，都被进程 13 刷光了时间资源，最终反而不如原 process 程序。</p>
+<p>时间片的设置是敏感的，很难把握其最佳数值：独占 cpu 的进程自然希望拥有更多的时间片；经常使用 I&#x2F;O 的进程希望每次 I&#x2F;O 响应时都能快速的调度回当前进程执行，如何平衡不同性质进程对时间资源的利用对操作系统调度有着重要的影响，同时恶意进程也可能通过设置其时间片为无穷大使系统崩溃，这是一门高深的学问。</p>
+<h2 id="相关问题"><a href="#相关问题" class="headerlink" title="相关问题"></a>相关问题</h2><p><strong>结合自己的体会，谈谈从程序设计者的角度看，单进程编程和多进程编程最大的区别是什么？</strong><br>多进程程序的编写要考虑各个子进程对应的任务，对于拥有相关联任务的进程，不仅有互斥与同步方面的要求，更有对共享资源的利用 – 特别是时间资源。并发进程的临界区不仅存在于高级语言角度，更在汇编级命令中有所体现，而由于调度函数的不确定性，使得临界区的调试和问题复现都有着很大的难度，并发编程在人类视角下是巨大的挑战。<br><strong>你是如何修改时间片的？仅针对样本程序建立的进程，在修改时间片前后， log 文件的统计结果（不包括Graphic）都是什么样？结合你的修改分析一下为什么会这样变化，或者为什么没变化？</strong><br>时间片的修改只需改变在 &#x2F;include&#x2F;kernel&#x2F;sched.h 文件中所定义宏 INIT_TASK：<br>#define INIT_TASK <br>  { 0,15,15, &#x2F;&#x2F;分别对应 state counter 和 priority;<br>    ……<br>  }<br>不同时间片的 log 文件分析已在上文中体现。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://stellaream.github.io">Stellaream</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://stellaream.github.io/2025/01/05/HIT-OS-LAB5/">https://stellaream.github.io/2025/01/05/HIT-OS-LAB5/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://stellaream.github.io" target="_blank">Stellaream's Blog</a>！</span></div></div><div class="tag_share"><div class="post-share"><div class="social-share" data-image="/img/cover.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/2025/01/05/HIT-OS-LAB4/" title="HIT-OS LAB4 系统调用"><img class="cover" src="/img/cover.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">HIT-OS LAB4 系统调用</div></div><div class="info-2"><div class="info-item-1">系统调用添加系统调用iam()系统调用iam()的原型为：  int iam(const char * name);  系统调用 iam() 将字符串参数 name 的内容拷贝到内核中保存并返回拷贝的字符数。要求 name 的长度不超过 23 个字符，如果 name 的长度超过 23 则返回 -1，并置 errno 为 EINVAL。在 who.c 中定义保存 name 的全局静态变量 myname:  static char myname[24];  在内核中实现函数 sys_iam(): 1234567891011121314151617int sys_iam(const char * name)&#123;    char buf[24];    int n;    /* copy into buffer */    for (n = 0; n &lt; 24; n++) &#123;        buf[n] = get_fs_byte(name + n);        if (buf[n] == &#x27;\0&#x27;) break;    &#125;  ...</div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/logo.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Stellaream</div><div class="author-info-description">心怀梦想 不负星光</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">5</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">1</div></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E8%BF%90%E8%A1%8C%E8%BD%A8%E8%BF%B9%E7%9A%84%E8%B7%9F%E8%B8%AA%E4%B8%8E%E7%BB%9F%E8%AE%A1"><span class="toc-number">1.</span> <span class="toc-text">进程运行轨迹的跟踪与统计</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%96%E5%86%99%E5%A4%9A%E8%BF%9B%E7%A8%8B%E7%9A%84%E6%A0%B7%E6%9C%AC%E7%A8%8B%E5%BA%8F"><span class="toc-number">1.1.</span> <span class="toc-text">编写多进程的样本程序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E8%BF%90%E8%A1%8C%E8%BD%A8%E8%BF%B9%E7%9A%84%E8%B7%9F%E8%B8%AA"><span class="toc-number">1.2.</span> <span class="toc-text">进程运行轨迹的跟踪</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6-var-process-log"><span class="toc-number">1.2.1.</span> <span class="toc-text">日志文件 &#x2F;var&#x2F;process.log</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E7%8A%B6%E6%80%81%E5%88%87%E6%8D%A2"><span class="toc-number">1.2.2.</span> <span class="toc-text">进程状态切换</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%90%E8%A1%8C%E6%A0%B7%E6%9C%AC%E7%A8%8B%E5%BA%8F%E5%B9%B6%E5%88%86%E6%9E%90%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6"><span class="toc-number">1.3.</span> <span class="toc-text">运行样本程序并分析日志文件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%90%E8%A1%8C%E6%A0%B7%E6%9C%AC%E7%A8%8B%E5%BA%8F"><span class="toc-number">1.3.1.</span> <span class="toc-text">运行样本程序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E6%9E%90%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6"><span class="toc-number">1.3.2.</span> <span class="toc-text">分析日志文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E8%84%9A%E6%9C%AC%E8%BF%9B%E8%A1%8C%E7%BB%9F%E8%AE%A1"><span class="toc-number">1.3.3.</span> <span class="toc-text">使用脚本进行统计</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E6%97%B6%E9%97%B4%E7%89%87"><span class="toc-number">1.4.</span> <span class="toc-text">修改时间片</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E9%97%AE%E9%A2%98"><span class="toc-number">1.5.</span> <span class="toc-text">相关问题</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/01/05/HIT-OS-LAB5/" title="HIT-OS LAB5 进程运行轨迹的跟踪与统计">HIT-OS LAB5 进程运行轨迹的跟踪与统计</a><time datetime="2025-01-05T01:53:17.000Z" title="发表于 2025-01-05 09:53:17">2025-01-05</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/01/05/HIT-OS-LAB4/" title="HIT-OS LAB4 系统调用">HIT-OS LAB4 系统调用</a><time datetime="2025-01-05T01:53:11.000Z" title="发表于 2025-01-05 09:53:11">2025-01-05</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/01/05/HIT-OS-LAB3/" title="HIT-OS LAB3 操作系统的引导">HIT-OS LAB3 操作系统的引导</a><time datetime="2025-01-05T01:52:52.000Z" title="发表于 2025-01-05 09:52:52">2025-01-05</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/01/05/HIT-OS-LAB2/" title="HIT-OS LAB2 调试分析 Linux 0.00 多任务切换">HIT-OS LAB2 调试分析 Linux 0.00 多任务切换</a><time datetime="2025-01-05T01:52:12.000Z" title="发表于 2025-01-05 09:52:12">2025-01-05</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/01/04/HIT-OS-LAB1/" title="HIT-OS LAB1 调试分析 Linux 0.00 引导程序">HIT-OS LAB1 调试分析 Linux 0.00 引导程序</a><time datetime="2025-01-04T14:30:20.000Z" title="发表于 2025-01-04 22:30:20">2025-01-04</time></div></div></div></div></div></div></main><footer id="footer" style="background: transparent;"><div id="footer-wrap"><div class="copyright">&copy;2025 By Stellaream</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
