@@ -326,10 +326,10 @@
 <p><img src="/2025/01/04/HIT-OS-LAB1/img4.png" alt="图4"></p>
 <h2 id="记录-iret-执行前后，栈是如何变化的？"><a href="#记录-iret-执行前后，栈是如何变化的？" class="headerlink" title="记录 iret 执行前后，栈是如何变化的？"></a>记录 iret 执行前后，栈是如何变化的？</h2><p><img src="/2025/01/04/HIT-OS-LAB1/img5.png" alt="图5"></p>
 <p>如图 5、6，SS:ESP 由 0x10:0x00000bc4 变为先前栈中压入的 0x0017:0x00000bd8，指向 task0 用户栈栈底(同时也是先前内核程序所用栈)。</p>
-<p><img src="/img6.png" alt="图6"></p>
-<h2 id="当任务进行系统调用时，即-int-0x80-时，记录栈的变化情况。"><a href="#当任务进行系统调用时，即-int-0x80-时，记录栈的变化情况。" class="headerlink" title="当任务进行系统调用时，即 int 0x80 时，记录栈的变化情况。"></a>当任务进行系统调用时，即 int 0x80 时，记录栈的变化情况。</h2><p><img src="/img7.png" alt="图7"></p>
+<p><img src="/2025/01/04/HIT-OS-LAB1/img6.png" alt="图6"></p>
+<h2 id="当任务进行系统调用时，即-int-0x80-时，记录栈的变化情况。"><a href="#当任务进行系统调用时，即-int-0x80-时，记录栈的变化情况。" class="headerlink" title="当任务进行系统调用时，即 int 0x80 时，记录栈的变化情况。"></a>当任务进行系统调用时，即 int 0x80 时，记录栈的变化情况。</h2><p><img src="/2025/01/04/HIT-OS-LAB1/img7.png" alt="图7"></p>
 <p>如图 7、8，task0 在执行 int 0x80 前，将欲打印字符 ‘A’ 的 ASCII 码 65 放入 eax 寄存器中作为 int 0x80 中断处理函数 system_interrupt 的参数，task0 内核栈krn_stk0 的栈顶 0x00000E60 附近未压入值。</p>
-<p><img src="/img8.png" alt="图8"></p>
+<p><img src="/2025/01/04/HIT-OS-LAB1/img8.png" alt="图8"></p>
 <p>如图 9，执行 int 0x80 中断指令后，SS:ESP 切换至 TSS0 中预设的 0x10:0x00000e60 (krn_stk0) 并压入 SS、ESP、EFLAGS、CS、EIP，对应栈中的值 0x0017、0x00000bd8、0x00000246、0x000f、0x000010eb。</p>
 <p><img src="/2025/01/04/HIT-OS-LAB1/img9.png" alt="图9"></p>
 <p>如图 10，由 iret 指令返回时，SS、ESP、EFLAGS、CS、EIP 隐式弹栈填充对应寄存器，指向 int 0x80 下条指令 movl $0xfff, %ecx 地址处执行。</p>
