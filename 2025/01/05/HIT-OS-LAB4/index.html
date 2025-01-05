@@ -1,0 +1,229 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>HIT-OS LAB4 系统调用 | Stellaream's Blog</title><meta name="author" content="Stellaream"><meta name="copyright" content="Stellaream"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="Lab4 -- 系统调用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HIT-OS LAB4 系统调用">
+<meta property="og:url" content="https://stellaream.github.io/2025/01/05/HIT-OS-LAB4/index.html">
+<meta property="og:site_name" content="Stellaream&#39;s Blog">
+<meta property="og:description" content="Lab4 -- 系统调用">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://stellaream.github.io/img/cover.jpg">
+<meta property="article:published_time" content="2025-01-05T01:53:11.000Z">
+<meta property="article:modified_time" content="2025-01-05T04:25:12.574Z">
+<meta property="article:author" content="Stellaream">
+<meta property="article:tag" content="Stellaream">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://stellaream.github.io/img/cover.jpg"><link rel="shortcut icon" href="/img/logo.jpg"><link rel="canonical" href="https://stellaream.github.io/2025/01/05/HIT-OS-LAB4/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          const mediaQueryDark = window.matchMedia('(prefers-color-scheme: dark)')
+          const mediaQueryLight = window.matchMedia('(prefers-color-scheme: light)')
+          
+          if (theme === undefined) {
+            if (mediaQueryLight.matches) activateLightMode()
+            else if (mediaQueryDark.matches) activateDarkMode()
+            else {
+              const hour = new Date().getHours()
+              const isNight = hour <= 6 || hour >= 18
+              isNight ? activateDarkMode() : activateLightMode()
+            }
+            mediaQueryDark.addEventListener('change', () => {
+              if (saveToLocal.get('theme') === undefined) {
+                e.matches ? activateDarkMode() : activateLightMode()
+              }
+            })
+          } else {
+            theme === 'light' ? activateLightMode() : activateDarkMode()
+          }
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'HIT-OS LAB4 系统调用',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  isShuoshuo: false
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><script>(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+  window.addEventListener('load', preloader.endLoading)
+
+  if (false) {
+    btf.addGlobalFn('pjaxSend', preloader.initLoading, 'preloader_init')
+    btf.addGlobalFn('pjaxComplete', preloader.endLoading, 'preloader_end')
+  }
+})()</script><div id="web_bg" style="background-image: url(/img/bg.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/logo.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">5</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">1</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/cover.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="/img/logo.jpg" alt="Logo"><span class="site-name">Stellaream's Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">HIT-OS LAB4 系统调用</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">HIT-OS LAB4 系统调用</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-01-05T01:53:11.000Z" title="发表于 2025-01-05 09:53:11">2025-01-05</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-01-05T04:25:12.574Z" title="更新于 2025-01-05 12:25:12">2025-01-05</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/HIT-OSLAB/">HIT-OSLAB</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="系统调用"><a href="#系统调用" class="headerlink" title="系统调用"></a>系统调用</h1><h2 id="添加系统调用iam"><a href="#添加系统调用iam" class="headerlink" title="添加系统调用iam()"></a>添加系统调用iam()</h2><p>系统调用iam()的原型为：</p>
+<blockquote>
+<p>int iam(const char * name);</p>
+</blockquote>
+<p>系统调用 iam() 将字符串参数 name 的内容拷贝到内核中保存并返回拷贝的字符数。要求 name 的长度不超过 23 个字符，如果 name 的长度超过 23 则返回 -1，并置 errno 为 EINVAL。<br>在 who.c 中定义保存 name 的全局静态变量 myname:</p>
+<blockquote>
+<p>static char myname[24];</p>
+</blockquote>
+<p>在内核中实现函数 sys_iam():</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">int sys_iam(const char * name)</span><br><span class="line">&#123;</span><br><span class="line">    char buf[24];</span><br><span class="line">    int n;</span><br><span class="line">    /* copy into buffer */</span><br><span class="line">    for (n = 0; n &lt; 24; n++) &#123;</span><br><span class="line">        buf[n] = get_fs_byte(name + n);</span><br><span class="line">        if (buf[n] == &#x27;\0&#x27;) break;</span><br><span class="line">    &#125;</span><br><span class="line">    /* length of name more than 23 */</span><br><span class="line">    if (n == 24) &#123;</span><br><span class="line">        return -EINVAL;</span><br><span class="line">    &#125;</span><br><span class="line">    /* less than 23, copy */</span><br><span class="line">    strcpy(myname, buf);</span><br><span class="line">    return n;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>函数首先定义长度为 24 的字符串 buf 充当缓冲区，定义 n 用于记录 name 长度。由于指针参数 name 传递地址为应用程序所在地址空间的逻辑地址，在内核中直接访问该地址访问到的是内核空间中的数据而不是用户地址空间中数据。系统调用函数 system_call 如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">system_call:</span><br><span class="line">    cmpl $nr_system_calls-1,%eax    # 检查系统调用编号是否在合法范围内</span><br><span class="line">    ja bad_sys_call</span><br><span class="line">    push %ds</span><br><span class="line">    push %es</span><br><span class="line">    push %fs</span><br><span class="line">    pushl %edx</span><br><span class="line">    pushl %ecx</span><br><span class="line">    pushl %ebx                      # 压栈保存参数</span><br><span class="line">    movl $0x10,%edx                 # ds, es 指向 GDT</span><br><span class="line">    mov %dx,%ds</span><br><span class="line">    mov %dx,%es</span><br><span class="line">    movl $0x17,%edx                 # fs 指向 LDT</span><br><span class="line">    mov %dx,%fs</span><br><span class="line">    call sys_call_table(,%eax,4)</span><br></pre></td></tr></table></figure>
+<p>system_call 使用寄存器 eax 存放系统调用编号，ebx、ecx、edx 作为函数参数，若参数多于三个或参数不能存放至寄存器则将其封装成结构体，将指针作为参数传递。注意到通过系统调用陷入内核态时，通过寄存器 fs 索引 LDT 中段描述符以访问对应进程用户态中数据。文件 segment.h 中定义了函数 get_fs_byte() 用于获得一个字节的用户空间中数据，函数 put_fs_byte() 用于获得一个字节的用户空间中数据。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">extern inline unsigned char get_fs_byte(const char * addr)</span><br><span class="line">&#123;</span><br><span class="line">    unsigned register char _v;</span><br><span class="line">    __asm__ (&quot;movb %%fs:%1,%0&quot;:&quot;=r&quot; (_v):&quot;m&quot; (*addr));</span><br><span class="line">    return _v;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">extern inline void put_fs_byte(char val,char *addr)</span><br><span class="line">&#123;</span><br><span class="line">    __asm__ (&quot;movb %0,%%fs:%1&quot;::&quot;r&quot; (val),&quot;m&quot; (*addr));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>故系统调用函数 sys_iam() 循环使用函数 get_fs_byte() 由用户地址空间逐字节读取 name 所指向字符串中字符至 buf 中并记录长度，直至读取 24 个字符或读取到字符串末尾 ‘\0’。若循环后 n 等于 24 则说明 name 指向字符串长度超过限长 23，返回 -1 并置 errno 为 EINVAL (定义在 errno.h 中)；反之则说明字符串长度小于 23，使用函数 strcpy() 将 buf 拷贝至 myname 并返回长度 n。函数 strcpy() 定义在 string.h 中：</p>
+<blockquote>
+<p>extern inline char * strcpy(char * dest,const char *src);</p>
+</blockquote>
+<h2 id="添加系统调用whoami"><a href="#添加系统调用whoami" class="headerlink" title="添加系统调用whoami()"></a>添加系统调用whoami()</h2><p>系统调用whoami()的原型为：</p>
+<blockquote>
+<p>int whoami(char* name, unsigned int size);</p>
+</blockquote>
+<p>系统调用 whoami() 将内核中由系统调用 iam() 保存至内核中的字符串 myname 拷贝至 name 指向的用户地址空间中。若拷贝字节数 size 小于 myname 的长度，则返回 -1 并置 errno 为 EINVAL，反之返回拷贝字节数即 myname 长度。</p>
+<p>在内核中实现函数 sys_whoami():</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">int sys_whoami(char* name, unsigned int size)</span><br><span class="line">&#123;</span><br><span class="line">    int n;</span><br><span class="line">    /* get length of myname */</span><br><span class="line">    for (n = 0; n &lt; 24; n++) &#123;</span><br><span class="line">        if (myname[n] == &#x27;\0&#x27;) break;</span><br><span class="line">    &#125;</span><br><span class="line">    if (n &gt; size) return -EINVAL;</span><br><span class="line">    for (int i = 0; i &lt; n; i++) &#123;</span><br><span class="line">        put_fs_byte(myname[i], name + i);</span><br><span class="line">    &#125;</span><br><span class="line">    return n;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>函数首先计算 myname 的长度 n，若 n 大于限长 size 则返回 -EINVAL，反之使用函数 put_fs_byte() 将字符串 myname 逐字符拷贝至 name 所指向用户地址空间中并返回拷贝字符串长度。</p>
+<h2 id="测试程序"><a href="#测试程序" class="headerlink" title="测试程序"></a>测试程序</h2><p>测试程序 iam.c</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">#define __LIBRARY__</span><br><span class="line">#include &lt;unistd.h&gt;</span><br><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">_syscall1(int, iam, const char*, name);</span><br><span class="line"></span><br><span class="line">int main(int argc, char ** argv)</span><br><span class="line">&#123;</span><br><span class="line">    if (argc != 2) &#123;</span><br><span class="line">        printf(&quot;Expect: iam(const char * name)\n&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    iam(argv[1]);</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>测试程序 whoami.c</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">#define __LIBRARY__</span><br><span class="line">#include &lt;unistd.h&gt;</span><br><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">_syscall2(int, whoami,char*,name,unsigned int,size);</span><br><span class="line">#define MAX_LENGTH 1024</span><br><span class="line"></span><br><span class="line">int main(int argc, char ** argv)</span><br><span class="line">&#123;</span><br><span class="line">    char name[MAX_LENGTH];</span><br><span class="line">    whoami(name, MAX_LENGTH);</span><br><span class="line">    printf(&quot;%s\n&quot;, name);</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>测试结果如图 1 所示：</p>
+<p><img src="/2025/01/05/HIT-OS-LAB4/lab4-img1.png" alt="图1"></p>
+<p>测试程序 testlab2.c 及测试脚本 testlab2.sh 运行结果如图 2 所示：</p>
+<p><img src="/2025/01/05/HIT-OS-LAB4/lab4-img2.png" alt="图2"></p>
+<h2 id="相关问题"><a href="#相关问题" class="headerlink" title="相关问题"></a>相关问题</h2><p><strong>从 Linux 0.11 现在的机制看，它的系统调用最多能传递几个参数？</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pushl %edx</span><br><span class="line">pushl %ecx</span><br><span class="line">pushl %ebx                      # 压栈保存参数</span><br></pre></td></tr></table></figure>
+<p>system_call 通过压栈保存系统调用参数，ebx、ecx、edx 三个寄存器中存放着至多三个系统调用参数。</p>
+<p><strong>你能想出办法来扩大这个限制吗？</strong></p>
+<p>若参数多于三个或有参数过大，不能存放至寄存器中，可将其封装为结构体并传递结构体指针作为系统调用参数，在系统调用函数执行阶段将其拆分。</p>
+<p><strong>用文字简要描述向 Linux 0.11 添加一个系统调用 foo() 的步骤</strong></p>
+<p>首先在 kernel 文件夹中创建系统调用 foo() 实现文件 foo.c 并编写系统调用函数 sys_foo()，随后在 include&#x2F;unistd.h 中添加 foo() 对应系统调用编号宏定义 <strong>#define __NR_foo X</strong> 并在 kernel&#x2F;system_call.s 中更新 nr_system_calls 为此时系统调用数。紧接着，在 include&#x2F;linux&#x2F;sys.h 中添加 extern int sys_foo() 并在 sys_call_table[] 中添加元素 sys_foo 使其位置与 __NR_foo 的值对应。最后，在编译后文件系统的 &#x2F;usr&#x2F;include&#x2F;unistd.h 中添加 __NR_foo 的宏定义。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://stellaream.github.io">Stellaream</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://stellaream.github.io/2025/01/05/HIT-OS-LAB4/">https://stellaream.github.io/2025/01/05/HIT-OS-LAB4/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://stellaream.github.io" target="_blank">Stellaream's Blog</a>！</span></div></div><div class="tag_share"><div class="post-share"><div class="social-share" data-image="/img/cover.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2025/01/05/HIT-OS-LAB5/" title="HIT-OS LAB5 进程运行轨迹的跟踪与统计"><img class="cover" src="/img/cover.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">HIT-OS LAB5 进程运行轨迹的跟踪与统计</div></div><div class="info-2"><div class="info-item-1">进程运行轨迹的跟踪与统计编写多进程的样本程序基于模板 process.c 编写多进程的样本程序，实现如下功能：  所有子进程都并行运行，每个子进程的实际运行时间一般不超过 30 秒 父进程向标准输出打印所有子进程的 id ，并在所有子进程都退出后才退出  基于 cpuio_bound 函数编写样本程序： 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253#define CPID_NUM 4int main(int argc, char * argv[])&#123;	int cpid_list[CPID_NUM];	int i;		/* child process 1 */	cpid_list[0] = fork();	if (cpid_list[0] &lt; 0) &#123;		printf(&quot;Fail to fork child process 1\n&quot;);		return -1;	&#125; else...</div></div></div></a><a class="pagination-related" href="/2025/01/05/HIT-OS-LAB3/" title="HIT-OS LAB3 操作系统的引导"><img class="cover" src="/img/cover.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">HIT-OS LAB3 操作系统的引导</div></div><div class="info-2"><div class="info-item-1">操作系统的引导改写 bootsect.s 主要完成如下功能：bootsect.s 能在屏幕上打印一段提示信息  XXX is booting…  其中 XXX 是你给自己的操作系统起的名字，也可以显示一个特色 logo ，以表示自己操作系统的与众不同。 由于 logo 占用字节数过大，选择在 bootsect 模块中打印提示信息  StellarOS is booting…  打印提示信息部分代码位于 ok_load_setup 标签附近，在成功将 setup 模块从磁盘加载至内存 0x90200 处，并取每磁道扇区数保存在变量 sectors 处后，利用 BIOS INT 0x10 功能 0x03 和 0x13 来显示信息。  如图 1，首先通过 INT 0X10 功能 0x03 定位当前光标位置，光标位置存储在寄存器 dx 中 (dh - 行；dl - 列)，随后通过 INT 0X10 功能 0X13 由寄存器 dx 标识的光标位置起始，打印若干长度字符串至屏幕并移动光标至字符串结尾，其中 es:bp 指向要显示的字符串，寄存器 cx...</div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/logo.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Stellaream</div><div class="author-info-description">心怀梦想 不负星光</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">5</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">1</div></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8"><span class="toc-number">1.</span> <span class="toc-text">系统调用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8iam"><span class="toc-number">1.1.</span> <span class="toc-text">添加系统调用iam()</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8whoami"><span class="toc-number">1.2.</span> <span class="toc-text">添加系统调用whoami()</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95%E7%A8%8B%E5%BA%8F"><span class="toc-number">1.3.</span> <span class="toc-text">测试程序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E9%97%AE%E9%A2%98"><span class="toc-number">1.4.</span> <span class="toc-text">相关问题</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/01/05/HIT-OS-LAB5/" title="HIT-OS LAB5 进程运行轨迹的跟踪与统计">HIT-OS LAB5 进程运行轨迹的跟踪与统计</a><time datetime="2025-01-05T01:53:17.000Z" title="发表于 2025-01-05 09:53:17">2025-01-05</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/01/05/HIT-OS-LAB4/" title="HIT-OS LAB4 系统调用">HIT-OS LAB4 系统调用</a><time datetime="2025-01-05T01:53:11.000Z" title="发表于 2025-01-05 09:53:11">2025-01-05</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/01/05/HIT-OS-LAB3/" title="HIT-OS LAB3 操作系统的引导">HIT-OS LAB3 操作系统的引导</a><time datetime="2025-01-05T01:52:52.000Z" title="发表于 2025-01-05 09:52:52">2025-01-05</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/01/05/HIT-OS-LAB2/" title="HIT-OS LAB2 调试分析 Linux 0.00 多任务切换">HIT-OS LAB2 调试分析 Linux 0.00 多任务切换</a><time datetime="2025-01-05T01:52:12.000Z" title="发表于 2025-01-05 09:52:12">2025-01-05</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/01/04/HIT-OS-LAB1/" title="HIT-OS LAB1 调试分析 Linux 0.00 引导程序">HIT-OS LAB1 调试分析 Linux 0.00 引导程序</a><time datetime="2025-01-04T14:30:20.000Z" title="发表于 2025-01-04 22:30:20">2025-01-04</time></div></div></div></div></div></div></main><footer id="footer" style="background: transparent;"><div id="footer-wrap"><div class="copyright">&copy;2025 By Stellaream</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
