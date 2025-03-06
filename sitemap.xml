@@ -2,54 +2,18 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://stellaream.github.io/HIT-OS-LAB3/</loc>
+    <loc>https://stellaream.github.io/about/index.html</loc>
     
-    <lastmod>2025-01-20</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://stellaream.github.io/HIT-OS-LAB6/</loc>
-    
-    <lastmod>2025-01-09</lastmod>
+    <lastmod>2025-03-06</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://stellaream.github.io/HIT-OS-LAB1/</loc>
+    <loc>https://stellaream.github.io/link/index.html</loc>
     
-    <lastmod>2025-01-05</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://stellaream.github.io/HIT-OS-LAB5/</loc>
-    
-    <lastmod>2025-01-05</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://stellaream.github.io/HIT-OS-LAB4/</loc>
-    
-    <lastmod>2025-01-05</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://stellaream.github.io/HIT-OS-LAB2/</loc>
-    
-    <lastmod>2025-01-05</lastmod>
+    <lastmod>2025-03-06</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -58,16 +22,61 @@
   <url>
     <loc>https://stellaream.github.io/categories/index.html</loc>
     
-    <lastmod>2025-01-04</lastmod>
+    <lastmod>2025-03-06</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://stellaream.github.io/about/index.html</loc>
+    <loc>https://stellaream.github.io/HIT-OS-LAB6/</loc>
     
-    <lastmod>2025-01-04</lastmod>
+    <lastmod>2025-03-06</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://stellaream.github.io/HIT-OS-LAB5/</loc>
+    
+    <lastmod>2025-03-06</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://stellaream.github.io/HIT-OS-LAB4/</loc>
+    
+    <lastmod>2025-03-06</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://stellaream.github.io/HIT-OS-LAB3/</loc>
+    
+    <lastmod>2025-03-06</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://stellaream.github.io/HIT-OS-LAB2/</loc>
+    
+    <lastmod>2025-03-06</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://stellaream.github.io/HIT-OS-LAB1/</loc>
+    
+    <lastmod>2025-03-06</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -76,7 +85,7 @@
 
   <url>
     <loc>https://stellaream.github.io/</loc>
-    <lastmod>2025-01-21</lastmod>
+    <lastmod>2025-03-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -85,8 +94,8 @@
 
   
   <url>
-    <loc>https://stellaream.github.io/categories/HIT-OSLAB/</loc>
-    <lastmod>2025-01-21</lastmod>
+    <loc>https://stellaream.github.io/categories/HIT-OS-LAB/</loc>
+    <lastmod>2025-03-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
