@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://stellaream.github.io/about/index.html</loc>
+    
+    <lastmod>2025-07-26</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://stellaream.github.io/xv6-Lab-Copy-on-write/</loc>
     
     <lastmod>2025-07-22</lastmod>
@@ -23,15 +32,6 @@
     <loc>https://stellaream.github.io/xv6-Lab-Page-tables/</loc>
     
     <lastmod>2025-07-17</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://stellaream.github.io/about/index.html</loc>
-    
-    <lastmod>2025-05-20</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -130,7 +130,7 @@
 
   <url>
     <loc>https://stellaream.github.io/</loc>
-    <lastmod>2025-07-23</lastmod>
+    <lastmod>2025-07-26</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -140,14 +140,14 @@
   
   <url>
     <loc>https://stellaream.github.io/categories/HIT-OS-LAB/</loc>
-    <lastmod>2025-07-23</lastmod>
+    <lastmod>2025-07-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://stellaream.github.io/categories/xv6/</loc>
-    <lastmod>2025-07-23</lastmod>
+    <lastmod>2025-07-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
